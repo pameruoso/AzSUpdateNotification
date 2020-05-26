@@ -26,3 +26,9 @@ $uri= 'https://api.telegram.org/bot{put your api token here without curly bracke
 iwr -Method 'POST' -Body (convertto-json @{"chat_id"=$chatID ; "text"="some text here"}) -Uri $uri -ContentType "application/json;charset=utf-8"
 
 ```
+
+If everything went ok you should see on your terminal a message like the following:
+
+    { "ok" : true, "result" : { "chat" : { "id" : -123456789, "title" : "Test Private Channel", "type" : "channel" }, "date" :      1448245538, "message_id" : 7, "text" : "some text here" } }
+  
+5. In the terminal message look for something like **"id" : -123456789**. This is your private channel ID. From now you can switch your Telegram channel to private
