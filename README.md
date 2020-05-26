@@ -32,3 +32,51 @@ If everything went ok you should see on your terminal a message like the followi
     { "ok" : true, "result" : { "chat" : { "id" : -123456789, "title" : "Test Private Channel", "type" : "channel" }, "date" :      1448245538, "message_id" : 7, "text" : "some text here" } }
   
 5. In the terminal message look for something like **"id" : -123456789**. This is your private channel ID. From now you can switch your Telegram channel to private
+
+
+## Powershell script that sends notifications to our private Telegram channel
+
+First of all this script uses an already existing PEP session. If you are here I guess you already know how to use Azure Stack and how PEP sessions work.
+Too you need to change the **$session_bot variable** according to how the session variable you opened.
+
+The following script will first set TLS1.2 as protocol to do invoke-webrequests via Powershell.
+Than it will loop until the status of the update is Completed or Failed.
+While the status is In Progress it will send a message containing  the current update operation.
+You can adjust the check frequency by changing the seconds on the sleep function at the end of the While Loop.
+
+```powershell
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+# set your private chatID and telegram api token
+$chatID = "-12345678"
+$uri= 'https://api.telegram.org/bot{put your api token here without curly brackets}/sendMessage'
+
+while ($true){
+$status = Invoke-Command -Session $session_bot -ScriptBlock {Get-AzureStackUpdateStatus -StatusOnly}
+
+#update completed case
+if ($status.Value -eq "Completed"){
+$text = "The update successfully installed!"
+iwr -Method 'POST' -Body (convertto-json @{"chat_id"=$chatID ; "text"=$text}) -Uri $uri -ContentType "application/json;charset=utf-8"
+break
+}
+
+#update in progress case
+if ($status.Value -eq "Running"){
+$text = "The update is in progress"
+iwr -Method 'POST' -Body (convertto-json @{"chat_id"=$chatID ; "text"=$text}) -Uri $uri -ContentType "application/json;charset=utf-8"
+[xml]$statusString =  Invoke-Command -Session $session_bot -ScriptBlock {Get-AzureStackUpdateStatus}
+$progress = $statusString.SelectNodes("//Step[@Status='In Progress']") | select fullstepindex,Description | Format-Table
+iwr -Method 'POST' -Body (convertto-json @{"chat_id"=$chatID ; "text"=$progress}) -Uri $uri -ContentType "application/json;charset=utf-8"
+}
+
+#update failed case
+if ($status.Value -eq "Failed"){
+$text = "The update FAILED!!"
+iwr -Method 'POST' -Body (convertto-json @{"chat_id"=$chatID ; "text"=$text}) -Uri $uri -ContentType "application/json;charset=utf-8"
+break
+}
+#check frequency
+Start-Sleep -Seconds 300
+}
+```
