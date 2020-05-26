@@ -12,8 +12,8 @@ At the moment the project is based on telegram due to free apis available, but p
 ## Telegram Setup
 First of all we need to setup Telegram.
 
-1. [Create a telegram Bot](https://core.telegram.org/bots#3-how-do-i-create-a-bot).
-After you complete the instructions note down your API token and keep it secure. We will use the token to authorize the messages sent from Azure Stack.
+1. [Create a telegram Bot](https://core.telegram.org/bots#3-how-do-i-create-a-bot). After you complete the instructions note down your API token and keep it secure. \
+We will use the token to authorize the messages sent from Azure Stack.
 2. Create a telegram channel that will be used as destination channel for your notifications. Let's keep the telegram channel public as we will switch it to private later. Note down your channel name like: **@mychannel**
 3. Add your bot as admin for the telegram channel you created at the step 2.
 4. At this point we want to obtain the private chatID from our Telegram Channel.
@@ -37,7 +37,7 @@ If everything went ok you should see on your terminal a message like the followi
 ## Powershell script that sends notifications to our private Telegram channel
 
 First of all this script uses an already existing PEP session. If you are here I guess you already know how to use Azure Stack and how PEP sessions work.
-Too you need to change the **$session_bot variable** according to how the session variable you opened.
+Too you need to change the **$session_bot variable** according to the PEP session variable name you opened.
 
 The following script will first set TLS1.2 as protocol to do invoke-webrequests via Powershell.
 Than it will loop until the status of the update is Completed or Failed.
