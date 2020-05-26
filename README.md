@@ -1,4 +1,4 @@
-# Azure Stack Hub Update Notification
+# Azure Stack Hub Update Notification - Telegram
 
 The purpose of this project is to monitor the status of the updates for Azure Stack Hub.
 
