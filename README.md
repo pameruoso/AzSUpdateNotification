@@ -1,6 +1,6 @@
 # Azure Stack Hub Update Notification
 
-The purpose of this project is to monitor the status of the updates for Azure Stack Hub,
+The purpose of this project is to monitor the status of the updates for Azure Stack Hub.
 
 Azure stack hub updates and hotfixes are very long in terms of installation time and babysitting the adminportal is not that funny.
 
