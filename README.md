@@ -52,6 +52,15 @@ $chatID = "-12345678"
 $uri= 'https://api.telegram.org/bot{put your api token here without curly brackets}/sendMessage'
 
 while ($true){
+
+#check if the PEP session is still valid. If Broken build a new one.
+if ($session_bot.State -eq "Broken"){
+#Remove Broken Sessions
+Get-PSSession | Where-Object {$_.State -eq 'Broken'} | Remove-PSSession
+#build a new session
+$session_bot = New-PSSession -ComputerName "ERCS IPADDR" -ConfigurationName PrivilegedEndpoint -Credential $credential -Authentication Credssp
+}
+
 $status = Invoke-Command -Session $session_bot -ScriptBlock {Get-AzureStackUpdateStatus -StatusOnly}
 
 #update completed case
@@ -78,6 +87,6 @@ iwr -Method 'POST' -Body (convertto-json @{"chat_id"=$chatID ; "text"=$text}) -U
 break
 }
 #check frequency
-Start-Sleep -Seconds 300
+Start-Sleep -Seconds 600
 }
 ```
