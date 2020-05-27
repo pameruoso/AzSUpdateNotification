@@ -89,3 +89,6 @@ break
 Start-Sleep -Seconds 600
 }
 ```
+
+Here is a sample message received on my Azure Stack Update status Channel on Telegram.
+![image](https://user-images.githubusercontent.com/42093926/83010358-70c77300-a018-11ea-8ed1-e83ecf280fd1.png)
