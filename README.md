@@ -66,7 +66,7 @@ if ($status.Value -eq "Running"){
 $text = "The update is in progress"
 iwr -Method 'POST' -Body (convertto-json @{"chat_id"=$chatID ; "text"=$text}) -Uri $uri -ContentType "application/json;charset=utf-8"
 [xml]$statusString =  Invoke-Command -Session $session_bot -ScriptBlock {Get-AzureStackUpdateStatus}
-$progress = $statusString.SelectNodes("//Step[@Status='In Progress']") | select fullstepindex,Description | Format-Table
+$progress = $statusString.SelectNodes("//Step[@Status='InProgress']") | select fullstepindex,Description | Format-Table
 iwr -Method 'POST' -Body (convertto-json @{"chat_id"=$chatID ; "text"=$progress}) -Uri $uri -ContentType "application/json;charset=utf-8"
 }
 
