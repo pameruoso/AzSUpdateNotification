@@ -53,8 +53,8 @@ $uri= 'https://api.telegram.org/bot{put your api token here without curly bracke
 
 while ($true){
 
-#check if the PEP session is still valid. If Broken/Disconnected build a new one.
-if ($session_bot.State -eq "Broken" -or $session_bot.State -eq "Disconnected"){
+#check if the PEP session is still valid. If Broken/Disconnected/Null build a new one.
+if ($session_bot.State -ne "Opened"){
 #Clean all sessions
 Get-PSSession |  Remove-PSSession
 #build a new session
