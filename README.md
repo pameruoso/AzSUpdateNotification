@@ -67,6 +67,8 @@ $status = Invoke-Command -Session $session_bot -ScriptBlock {Get-AzureStackUpdat
 if ($status.Value -eq "Completed"){
 $text = "The update successfully installed!"
 iwr -Method 'POST' -Body (convertto-json @{"chat_id"=$chatID ; "text"=$text}) -Uri $uri -ContentType "application/json;charset=utf-8"
+#Clean all sessions
+Get-PSSession |  Remove-PSSession
 break
 }
 
@@ -83,6 +85,8 @@ iwr -Method 'POST' -Body (convertto-json @{"chat_id"=$chatID ; "text"=$progress}
 if ($status.Value -eq "Failed"){
 $text = "The update FAILED!!"
 iwr -Method 'POST' -Body (convertto-json @{"chat_id"=$chatID ; "text"=$text}) -Uri $uri -ContentType "application/json;charset=utf-8"
+#Clean all sessions
+Get-PSSession |  Remove-PSSession
 break
 }
 #check frequency
